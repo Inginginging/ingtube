@@ -1,0 +1,10 @@
+extends base
+include mixins/video    
+
+block content 
+    h2 Welcome IngTube. Enjoy Various Videos!
+    each x in videos 
+        +video(x)
+    else 
+        ul 
+            li Sorry. Nothing found....

@@ -1,0 +1,8 @@
+mixin video(info)
+    div 
+        h4=info.title
+            ul
+                li #{info.views} views 
+                li #{info.comments} comments 
+                li Posted #{info.createdAt}
+                li #{info.rate}/5
