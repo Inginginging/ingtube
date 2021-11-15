@@ -3,8 +3,8 @@ include mixins/video
 
 block content 
     h2 Welcome IngTube. Enjoy Various Videos!
-    each x in videos 
-        +video(x)
+    each video in videos 
+        +video(video)
     else 
         ul 
             li Sorry. Nothing found....
