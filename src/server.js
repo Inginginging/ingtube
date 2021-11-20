@@ -5,7 +5,7 @@ import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 
-const PORT = 4000;
+
 const app = express(); //express를 사용해 app객체를 만듬. (express의 기능을 가진 app) 
 const logger = morgan("dev");
 
@@ -19,6 +19,5 @@ app.use("/", globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 
-const handleListening = () =>console.log(`Server listening on port http://localhost:${PORT} 🚀`);
+export default app;
 
-app.listen(PORT,handleListening);

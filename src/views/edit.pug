@@ -1,7 +1,9 @@
 extends base
 
 block content 
-    h2 Edit Title: #{video.title}
+    h2 Edit Video: #{video.title}
     form(method="POST")
-        input(placeholed="Edit Title", value=`${video.title}`, name="title", required)
+        input(placeholed="Edit Title", value=video.title, name="title", required)
+        input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=20, value=video.description)
+        input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required, value=video.hashtags.join())
         input(type="submit", value="Save")
