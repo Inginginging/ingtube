@@ -1,9 +1,12 @@
 import express from "express"; //node_modules에서 express import
 import morgan from "morgan"; // morgan: external middleware
+import session from "express-session" // session과 cookie저장을 가능하게 해주는 middleware
+import MongoStore from "connect-mongo"; //session data를 mongodb에 저장하기 위해  mongostroe import
 
-import globalRouter from "./routers/globalRouter";
+import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
+import { localsMiddleware } from "./middleware";
 
 
 const app = express(); //express를 사용해 app객체를 만듬. (express의 기능을 가진 app) 
@@ -14,8 +17,15 @@ app.set("views", process.cwd() + "/src/views"); //express의 view 디폴트 값�
 
 app.use(logger);//morgan middleware를 global하게 사용
 app.use(express.urlencoded({ extended: true })); //form의 body를 express에 이해시키기 위한 메서드
+app.use(session({
+    secret: process.env.COOKIE_SECRET,
+    resave: false, //웹 사이트에 방문한 모든 사람에게 session을 제공하는 것이 아니라, session을 변경(로그인)한 사람에게만 session id 지급.
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl:process.env.DB_URL }), //나의 mongourl에 session 저장.
+}));
+app.use(localsMiddleware) //localmiddlware: pug template과 express간의 소통을 가틍하게 해주는 local object 사용.
 
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 

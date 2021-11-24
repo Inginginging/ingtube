@@ -17,7 +17,7 @@ export const postUpload = async(req,res) =>{
         hashtags: Video.formatHashtags(hashtags),  //static 사용,
 
      });
-        return res.redirect("/");
+        return res.status(400).redirect("/");
     }catch(error){
         return res.render("Upload", {pageTitle: "Upload Video",  errorMessage: error._message});
     }
@@ -27,7 +27,7 @@ export const watch = async(req, res) => {
     const {id} = req.params; // === const id = req.params.id;, get method로 query에 쓰인 id 저장
     const video = await Video.findById(id);
     if(!video){
-        return res.render("404", {pageTitle: "Error: Video Not Found"})
+        return res.status(404).render("404", {pageTitle: "Error: Video Not Found"})
     }
     return res.render("watch", {pageTitle: video.title, video});
 }; 
@@ -36,7 +36,7 @@ export const getEdit = async(req, res) =>{
     const {id} = req.params;
     const video = await Video.findById(id);
     if(!video){
-        return res.render("404", {pageTitle: "Error: Video Not Found"})
+        return res.status(404).render("404", {pageTitle: "Error: Video Not Found"})
     }
     return res.render("edit",{pageTitle: `Editing: ${video.title}`, video, })
 }
