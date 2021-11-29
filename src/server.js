@@ -6,7 +6,7 @@ import MongoStore from "connect-mongo"; //session data를 mongodb에 저장하�
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
-import { localsMiddleware } from "./middleware";
+import { localsMiddleware } from "./middleware"; //server에 import함으로서 모든 template에서 local객체 사용 가능
 
 
 const app = express(); //express를 사용해 app객체를 만듬. (express의 기능을 가진 app) 
@@ -25,6 +25,7 @@ app.use(session({
 }));
 app.use(localsMiddleware) //localmiddlware: pug template과 express간의 소통을 가틍하게 해주는 local object 사용.
 
+app.use("/uploads", express.static("uploads")) //static은 브라우저에 노출시키고 싶은 폴더를 지정해주면 노출시켜줌.
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
