@@ -26,6 +26,7 @@ app.use(session({
 app.use(localsMiddleware) //localmiddlware: pug template과 express간의 소통을 가틍하게 해주는 local object 사용.
 
 app.use("/uploads", express.static("uploads")) //static은 브라우저에 노출시키고 싶은 폴더를 지정해주면 노출시켜줌.
+app.use("/static", express.static("assets")) ///static url로 접근시 assets 폴더 보이게함. url은 base pug에서 사용.
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
