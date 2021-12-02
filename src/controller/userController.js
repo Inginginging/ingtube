@@ -172,7 +172,13 @@ export const postChangePw = async(req,res) => {
 
 export const see = async(req,res) =>{
     const {id} = req.params; //profile page는 모두가 볼 수 있으므로 user session에서 받아오는것이 아니라 url에서 받아와야됨.
-    const user = await User.findById(id).populate("videos");//mongoose의 populate메서드는 model의 videos안에 있는 ref로 부터 video'객체'정보를 찾아옴.
+    const user = await User.findById(id).populate({
+        path:"videos",
+        populate: {
+            path: "owner",
+            model: "User",
+        },
+    });//mongoose의 populate메서드는 model의 videos안에 있는 ref로 부터 video'객체'정보를 찾아옴.
     if(!user){
         return res.status(404).render("404", {pageTitle: "Cannot find User"});
     }

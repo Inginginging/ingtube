@@ -2,7 +2,7 @@ import Video from "../models/Video";
 import User from "../models/User";
 
 export const home = async(req, res) =>{ 
-    const videos= await Video.find({}).sort({createdAt: "desc" }); //await을 사용하여 js에서 db와 통신하도록 기다려줌. 통신 후에 아래 코드 실행, desc을 통해 생성순서대로 내림차순 정렬.
+    const videos= await Video.find({}).sort({createdAt: "desc" }).populate("owner"); //await을 사용하여 js에서 db와 통신하도록 기다려줌. 통신 후에 아래 코드 실행, desc을 통해 생성순서대로 내림차순 정렬.
     res.render("home", {pageTitle: "Home", videos});
 }
 
@@ -92,7 +92,7 @@ export const search = async(req,res) =>{
     if(keyword){ //search input에 무엇인가 써서 search를 했다면.
         videos = await Video.find({
             title: { $regex: new RegExp(`${keyword}`,"i") } , //keyword가 포함된 title을 찾는 regexp 사용
-        }).sort({createdAt:"desc"});
+        }).sort({createdAt:"desc"}).populate("owner");
     }
     return res.render("video/search", {pageTitle: "Search", videos});
 }

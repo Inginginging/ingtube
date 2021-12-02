@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     avatarUrl: String,
     socialOnly: {type: Boolean, default: false},
     email: {type: String, required: true, unique: true,},
-    password: {type: String, minlength: 8 },
+    password: {type: String, },
     name: {type: String, required: true, },
     location: {type: String,},
     videos: [{type: mongoose.Schema.Types.ObjectId, ref: "Video"}] //db에 저장된 Video정보로 부터 objectId를 가져와 user의 video 설정..video를 업로드 가능하므로 array로 설정.

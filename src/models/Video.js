@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const videoSchema = new mongoose.Schema({
     title: {type: String, required: true, trim:true, maxlength: 70},
     fileUrl: {type: String, required: true},
-    description: {type: String, required: true, trim:true, minlength: 20},
+    description: {type: String, required: true, trim:true, minlength: 10},
     createdAt: {type: Date, required: true, default: Date.now }, //default 값을 설정하면 data create 시 생략해도 오류 없음.  
     hashtags: [{type:String, trim:true, }],
     meta:{

@@ -1,0 +1,24 @@
+.empty_message {
+  margin-bottom: 50px;
+  font-size: 18px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 50px;
+}
+
+.auth_switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  span {
+    margin-bottom: 10px;
+  }
+  a {
+    text-decoration: underline;
+    font-size: 18px;
+  }
+}

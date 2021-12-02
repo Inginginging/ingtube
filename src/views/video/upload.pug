@@ -3,10 +3,10 @@ extends ../base
 block content 
     if errorMessage
         span=errorMessage
-    form(method="POST", enctype="multipart/form-data")
+    form(method="POST", enctype="multipart/form-data").upload-video_form
         label(for="video") Video File 
         input(name="video", type="file", id="video", required, accept="video/*")
         input(name="title", type="text", placeholder="Title of Video", required, maxlength=70)
-        input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=20)
+        input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=10)
         input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required)
         input(type="submit", value="Upload")
