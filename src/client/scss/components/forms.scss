@@ -9,7 +9,7 @@ form {
   }
 }
 
-input {
+input:not([type="range"]) {
   all: unset;
   background-color: black;
   padding: 15px 20px;
@@ -26,6 +26,7 @@ input {
 
 input[type="submit"],
 .social_btn {
+  margin-top: 8px;
   background-color: $red;
   opacity: 0.9;
   padding: 12px 20px;

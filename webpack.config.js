@@ -1,7 +1,10 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //style-loader를 대신할 plugin. style-loader는 js폴더에 css를 주입하게 해줌. 우리가 원하는 것은 둘의 분리
 const path = require("path");
 module.exports = {
-  entry: "./src/client/js/main.js", //변경하고자 하는 파일의 경로
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  }, //변경하고자 하는 파일의 경로
   mode: "development", //개발중인 상태임.
   watch: true, 
   watchOptions:{
@@ -13,7 +16,7 @@ module.exports = {
     }),
   ],
   output: {   //소스코드의 압축작업이 실행된 후 저장될 경로.
-    filename: "js/main.js",
+    filename: "js/[name].js", //entry에 있는 이름을 가져오는 변수 
     path: path.resolve(__dirname, "assets"), //__dirname은 intube의 절대경로를 나타냄.
     clean: true,
   },
