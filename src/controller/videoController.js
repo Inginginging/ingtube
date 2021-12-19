@@ -1,5 +1,6 @@
 import Video from "../models/Video";
 import User from "../models/User";
+import res from "express/lib/response";
 
 export const home = async(req, res) =>{ 
     const videos= await Video.find({}).sort({createdAt: "desc" }).populate("owner"); //await을 사용하여 js에서 db와 통신하도록 기다려줌. 통신 후에 아래 코드 실행, desc을 통해 생성순서대로 내림차순 정렬.
@@ -95,4 +96,15 @@ export const search = async(req,res) =>{
         }).sort({createdAt:"desc"}).populate("owner");
     }
     return res.render("video/search", {pageTitle: "Search", videos});
+}
+
+export const registerView = async(req, res) => { //어떠한 템플릿을 return하지 않음. post해도 그냥 그 url그대로 유지.
+    const {id} = req.params;
+    const video = await Video.findById(id);
+    if(!video){
+        return res.sendStatus(404);
+    }
+    video.meta.views = video.meta.views + 1;
+    await video.save();
+    return res.sendStatus(200);
 }

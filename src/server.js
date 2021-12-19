@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo"; //session data를 mongodb에 저장하�
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
+import apiRouter from "./routers/apiRouter";
 import { localsMiddleware } from "./middleware"; //server에 import함으로서 모든 template에서 local객체 사용 가능
 
 
@@ -30,6 +31,7 @@ app.use("/static", express.static("assets")) ///static url로 접근시 assets �
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
+app.use("/api", apiRouter);
 
 export default app;
 

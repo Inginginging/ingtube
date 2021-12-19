@@ -113,6 +113,13 @@ const handleKeydown = (event) =>{
     }
 }
 
+const handleEnd = () => {
+    const { id } = videoContainer.dataset;  //videoContainer의 data-id에서 video의 id 가져옴
+    fetch(`/api/videos/${id}/view`, {
+        method: "POST",
+    }); //forntend의 정보를 backend로 전송. 
+}
+
 if (video.readyState == 4) { //eventlistener을 추가하기 전에 video가 로딩이 돼, handleLoadedMetadata가 불러지지 않을 수 있음. video.readyState가 4는 video가 불러와져서 사용이 가능하다는 뜻
     handleLoadedMetaData();
 }
@@ -120,8 +127,9 @@ if (video.readyState == 4) { //eventlistener을 추가하기 전에 video가 로
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolume); //input이라는 event는 range태그의 변화를 실시간으로 출력해줌.
-video.addEventListener("loadeddata", handleLoadedMetaData); //loadedmetadata => video의 meta data를 가져오는 event.
-video.addEventListener("timeupdate", handleTimeUpdate); 
+video.addEventListener("loadedmetadata", handleLoadedMetaData); //loadedmetadata => video의 meta data를 가져오는 event.
+video.addEventListener("timeupdate", handleTimeUpdate);
+video.addEventListener("ended", handleEnd); //비디오 시청이 끝났을때의 이벤트 감지. 
 video.addEventListener("click", handleVideoClick);
 timeline.addEventListener("input", handleTimeLine);
 fullScreenBtn.addEventListener("click", handleFullScreen);
