@@ -1,6 +1,9 @@
 extends ../base
 
 block content 
+    div
+        video#preview
+        button#startBtn Start Recordeing
     if errorMessage
         span=errorMessage
     form(method="POST", enctype="multipart/form-data").upload-video_form
@@ -10,3 +13,6 @@ block content
         input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=10)
         input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required)
         input(type="submit", value="Upload")
+
+block scripts 
+    script(src="/static/js/recorder.js") 

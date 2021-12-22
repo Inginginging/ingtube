@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     main: "./src/client/js/main.js",
     videoPlayer: "./src/client/js/videoPlayer.js",
+    recorder: "./src/client/js/recorder.js",
   }, //변경하고자 하는 파일의 경로
   mode: "development", //개발중인 상태임.
   watch: true, 
