@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/ing928/ingtube#readme",
   "dependencies": {
+    "@ffmpeg/core": "^0.8.5",
+    "@ffmpeg/ffmpeg": "^0.9.7",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
@@ -27,7 +29,8 @@
     "multer": "^1.4.3",
     "node-fetch": "^2.6.1",
     "pug": "^3.0.2",
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "^0.13.9",
+    "resolve-url": "^0.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

@@ -13,11 +13,12 @@ export const getUpload = (req,res) =>{
 export const postUpload = async(req,res) =>{
     const {_id} = req.session.user; //session에 login돼있는 user로 부터 _id 가져옴.
     const {title, description, hashtags} = req.body;
-    const {path} = req.file; //router에서 videoUpload middleware를 사용하므로 req.file사용 가능.
+    const {video, thumbnail} = req.files; //router에서 videoUpload middleware를 사용하므로 req.files사용 가능.
     try{
         const newVideo = await Video.create({ //db에 자동으로 save 해줌.
         title, //===title:title
-        fileUrl: path,
+        fileUrl: video[0].path,
+        thumbUrl: thumbnail[0].path,
         description,
         owner: _id, //owner에 id 저장.
         hashtags: Video.formatHashtags(hashtags),  //static 사용,

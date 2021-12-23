@@ -16,6 +16,11 @@ const logger = morgan("dev");
 app.set("view engine", "pug"); //express에 view engine으로 pug를 사용할 것을 알려줌
 app.set("views", process.cwd() + "/src/views"); //express의 view 디폴트 값을 /src/views로 옮겨줌.
 
+app.use((req, res, next) => {  //ffmpeg error를 위한 조치.
+    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.header("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+    }); 
 app.use(logger);//morgan middleware를 global하게 사용
 app.use(express.urlencoded({ extended: true })); //form의 body를 express에 이해시키기 위한 메서드
 app.use(session({
@@ -32,6 +37,7 @@ app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 app.use("/api", apiRouter);
+
 
 export default app;
 

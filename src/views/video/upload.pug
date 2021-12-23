@@ -1,18 +1,22 @@
 extends ../base
 
 block content 
-    div
-        video#preview
-        button#startBtn Start Recordeing
-    if errorMessage
-        span=errorMessage
-    form(method="POST", enctype="multipart/form-data").upload-video_form
-        label(for="video") Video File 
-        input(name="video", type="file", id="video", required, accept="video/*")
-        input(name="title", type="text", placeholder="Title of Video", required, maxlength=70)
-        input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=10)
-        input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required)
-        input(type="submit", value="Upload")
+    div.upload_container
+        div#videoBox.hide
+            video#preview
+            button#actionBtn Recording Shorts
+        if errorMessage
+            span=errorMessage
+        form(method="POST", enctype="multipart/form-data").upload-video_form
+            button#recordBtn.record_btn Recording Shorts Now!
+            label(for="video") Video File 
+            input(name="video", type="file", id="video", required, accept="video/*")
+            label(for="thumbnail") Thumbnail File 
+            input(name="thumbnail", type="file", id="thumbnail", required, accept="image/*")
+            input(name="title", type="text", placeholder="Title of Video", required, maxlength=70)
+            input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=10)
+            input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required)
+            input(type="submit", value="Upload")
 
 block scripts 
     script(src="/static/js/recorder.js") 

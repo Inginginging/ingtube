@@ -27,10 +27,20 @@ input:not([type="range"]) {
 input[type="submit"],
 .social_btn {
   margin-top: 8px;
-  background-color: $red;
+  background-color: $red !important;
   opacity: 0.9;
   padding: 12px 20px;
-  text-align: center;
+  text-align: center !important;
   cursor: pointer;
   display: block;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
