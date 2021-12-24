@@ -28,7 +28,8 @@ export const postUpload = async(req,res) =>{
         user.save();
         return res.redirect("/");
     }catch(error){
-        return res.render("video/upload", {pageTitle: "Upload Video",  errorMessage: error._message});
+        req.flash("error",error._message);
+        return res.render("video/upload", {pageTitle: "Upload Video",});
     }
 }
 
@@ -37,6 +38,7 @@ export const watch = async(req, res) => {
     const video = await Video.findById(id).populate("owner");//mongoose의 populate메서드는 model의 owner안에 있는 ref로 부터 user'객체'정보를 찾아옴.
     //const owner = await User.findById(video.owner); //user model에서 video.owner의 id와 같은 id를 가진 user 객체 정보 찾아옴.
     if(!video){
+        req.flash("error", "Video Not Found");
         return res.status(404).render("404", {pageTitle: "Error: Video Not Found"})
     }
     return res.render("video/watch", {pageTitle: video.title, video,});
@@ -47,9 +49,11 @@ export const getEdit = async(req, res) =>{
     const video = await Video.findById(id);
     const {_id} = req.session.user;//login돼있는 user의 id
     if(!video){
+        req.flash("error", "Video Not Found");
         return res.status(404).render("404", {pageTitle: "Error: Video Not Found"})
     }
     if(String(video.owner) !== String(_id)){ //video의 owner id와 현재 로그인 돼있는 user의 id가 다를경우 video edit불가능
+        req.flash("error","Not Authorized");
         return res.status(403).redirect("/");
     }
     return res.render("video/edit",{pageTitle: `Editing: ${video.title}`, video, })
@@ -64,6 +68,7 @@ export const postEdit = async(req, res) =>{
         return res.render("404", {pageTitle: "Error: Video Not Found"})
     }
     if(String(video.owner) !== String(_id)){ //video의 owner id와 현재 로그인 돼있는 user의 id가 다를경우 video edit불가능
+        req.flash("error", "You are not the Owner of the Video");
         return res.status(403).redirect("/");
     }
     await Video.findByIdAndUpdate(id,{
@@ -71,6 +76,7 @@ export const postEdit = async(req, res) =>{
         description,
         hashtags: Video.formatHashtags(hashtags), //static 사용
     })
+    req.flash("info", "The Video updated")
     return res.redirect(`/videos/${id}`);
 }
 
@@ -79,9 +85,11 @@ export const deleteVideo = async(req,res) =>{
     const video = await Video.findById(id);
     const {_id} = req.session.user;//login돼있는 user의 id
     if(String(video.owner) !== String(_id)){ //video의 owner id와 현재 로그인 돼있는 user의 id가 다를경우 video delete 불가능
+        req.flash("error","Not Authorized");
         return res.status(403).redirect("/");
     }
     if(!video){
+        req.flash("error","NO Such Video");
         return res.render("404", {pageTitle: "Error: Video Not Found"})
     }
     await Video.findByIdAndDelete(id);

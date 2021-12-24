@@ -13,6 +13,7 @@ export const protectorMiddleware = (req,res,next) =>{ //logout된 사용자가 �
     if(req.session.loggedIn){
         return next(); //login 돼있으면 다음 요청을 수행해도 됨.
     }else{
+        req.flash("error", "Login First"); //flash message 띄우기
         return res.redirect("/login") //login 돼있지 않으면 login 페이지로 redirect함.
     }
 }
@@ -21,6 +22,7 @@ export const publicOnlyMuddleware = (req,res,next) =>{ //login된 사용자가 �
     if(!req.session.loggedIn){
         return next(); //logout 돼있으면 다음 요청 수행해도 됨.
     }else{
+        req.flash("error", "Already Authorized"); //flash message 띄우기
         return res.redirect("/") //logout돼 있지 않으면 home으로 redirect
     }
 }

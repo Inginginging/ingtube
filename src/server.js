@@ -1,6 +1,7 @@
 import express from "express"; //node_modules에서 express import
 import morgan from "morgan"; // morgan: external middleware
 import session from "express-session" // session과 cookie저장을 가능하게 해주는 middleware
+import flash from "express-flash"; //flash message를 띄우는 middleware
 import MongoStore from "connect-mongo"; //session data를 mongodb에 저장하기 위해  mongostroe import
 
 import rootRouter from "./routers/rootRouter";
@@ -29,6 +30,8 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl:process.env.DB_URL }), //나의 mongourl에 session 저장.
 }));
+
+app.use(flash());//flash middleware 사용.
 app.use(localsMiddleware) //localmiddlware: pug template과 express간의 소통을 가틍하게 해주는 local object 사용.
 
 app.use("/uploads", express.static("uploads")) //static은 브라우저에 노출시키고 싶은 폴더를 지정해주면 노출시켜줌.

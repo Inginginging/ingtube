@@ -8,11 +8,13 @@ export const getJoin = (req,res) => res.render("user/join", {pageTitle: "Join"})
 export const postJoin = async(req,res) =>{
     const {name, username, email, password, password2, location} = req.body;
     if(password != password2){ //password의 확인 여부 확인
-        return res.status(400).render("user/join", {pageTitle: "Join", errorMessage: "The password confirmation failed"});
+        req.flash("error", "The password Confirmation failed");
+        return res.status(400).render("user/join", {pageTitle: "Join"});
     }
     const exists = await User.exists({ $or: [ {username}, {email} ]} );//User db안에 중복되는 username과 email의 존재 여부 확인 
     if(exists){
-        return res.status(400).render("user/join", {pageTitle: "Join", errorMessage: "This Username/Email is already taken"});
+        req.flash("error", "This Username/Email is already taken");
+        return res.status(400).render("user/join", {pageTitle: "Join"});
     }
     try{ //그외의 오류들을 잡기 위해 예외 처리 구문 사용.
         await User.create({
@@ -24,7 +26,8 @@ export const postJoin = async(req,res) =>{
         });
         return res.redirect("/login")
     }catch(error){
-        return res.render("user/join", {pageTitle: "Join",  errorMessage: error._message});
+        req.flash("error", error._message);
+        return res.render("user/join", {pageTitle: "Join"});
     }
 };
 
@@ -34,14 +37,17 @@ export const postLogin = async(req, res) =>{
     const {username, password} = req.body;
     const user = await User.findOne({username, socialOnly:false}) //db에서 req.body의 username과 db안의 username이 같은것이 있는지 확인
     if(!user){ //username이 db안에 등록되어 있지 않을때.
-        return res.status(400).render("user/login", {pageTitle: "Login", errorMessage: "No such Username"});
+        req.flash("error", "No such Username");
+        return res.status(400).render("user/login", {pageTitle: "Login"});
     }
     const ok = await bcrypt.compare(password, user.password); //rep.body로 부터 받은 password와 db안의 password가 같은지 확인
     if(!ok){
-        return res.status(400).render("user/login", {pageTitle: "Login", errorMessage: "Wrong password"});
+        req.flash("error", "Wrong password");
+        return res.status(400).render("user/login", {pageTitle: "Login"});
     }
     req.session.loggedIn = true; //req.session 객체에 loggedIn 프로퍼티 추가 후 값을. true로 설정
     req.session.user = user; //req.session 객체에 로그인하려는 user의 정보 프로퍼티로 추가.
+    req.flash("info", "Welcome");
     return res.redirect("/")
 }
 
@@ -94,7 +100,7 @@ export const finishGithubLogin = async(req,res) =>{
             (email) => email.primary === true && email.verified === true
         );
         if(!emailObj){ //email은 필수 조건이므로. 이메일이 없으면 로그인할수 없음.
-            //set notification
+            req.flash("error", "You don't have any Email on Github");
             return res.redirect("/login") 
         }
         let user = await User.findOne({emial: emailObj.email}) //db에서 기존에 등록된 email과 github login email이 같은것이 있는지 확인
@@ -113,6 +119,7 @@ export const finishGithubLogin = async(req,res) =>{
         req.session.user = user; 
         return res.redirect("/")
     }else{
+        req.flash("error","Cannot Login with Github account")
         return res.redirect("/login")
     }
 }
@@ -132,13 +139,15 @@ export const postEdit = async (req,res) =>{
     if(username != user.username){ //username이 변경되었을때
         const exists = await User.findOne({username}) //db에 중복되는 username이 있는지 확인
         if(exists){
-            return res.status(400).render("user/edit-profile", {pageTitle: "Edit Profile", errorMessage:"The Username already taken"});
+            req.flash("error","The Username already taken");
+            return res.status(400).render("user/edit-profile", {pageTitle: "Edit Profile"});
         }
     }
     if(email != user.email){ //email이 변경되었을때
         const exists = await User.findOne({email}) //db에 중복되는 emial이 있는지 확인
         if(exists){
-            return res.status(400).render("user/edit-profile", {pageTitle: "Edit Profile", errorMessage:"Someone alreay using the Email"});
+            req.flash("error","Someone alreay using the Email");
+            return res.status(400).render("user/edit-profile", {pageTitle: "Edit Profile"});
         }
     }
     const updatedUser = await User.findByIdAndUpdate( _id, {
@@ -152,7 +161,13 @@ export const postEdit = async (req,res) =>{
     return res.redirect("/users/edit");
 }
 
-export const getChangePw = (req,res) => res.render("user/changePw", {pageTitle: "Change Password"});
+export const getChangePw = (req,res) => {
+    if (req.session.user.socialOnly === true) {
+      req.flash("error", "The Social User Cannot change the Password");
+      return res.redirect("/");
+    }
+    return res.render("user/changePw", { pageTitle: "Change Password" });
+  };
 
 export const postChangePw = async(req,res) => {
     const { _id } = req.session.user;
@@ -160,13 +175,16 @@ export const postChangePw = async(req,res) => {
     const user = await User.findById(_id);
     const ok = await bcrypt.compare(oldPw , user.password);
     if(!ok){ //db에 저장된 pw와 form에 기입한 pw가  다를떄
-        return res.status(400).render("user/changePw", {pageTitle: "Change Password", errorMessage: "The current Password is Incorrect"});
+        req.flash("error", "The current Password is Incorrect");
+        return res.status(400).render("user/changePw", {pageTitle: "Change Password",});
     }
     if(newPw != newPw1){
-        return res.status(400).render("user/changePw", {pageTitle: "Change Password", errorMessage: "Password Confirmation Failed"});
+        req.flash("error", "Password Confirmation Failed");
+        return res.status(400).render("user/changePw", {pageTitle: "Change Password"});
     }
     user.password = newPw;
     await user.save(); //save 하면 model에서 설정한 pre middleware가 작동하여 hash해줌
+    req.flash("info", "Password updated");
     return res.redirect("/users/logout")
 }
 
@@ -180,6 +198,7 @@ export const see = async(req,res) =>{
         },
     });//mongoose의 populate메서드는 model의 videos안에 있는 ref로 부터 video'객체'정보를 찾아옴.
     if(!user){
+        req.flash("error", "There is No such User");
         return res.status(404).render("404", {pageTitle: "Cannot find User"});
     }
     //const videos = await Video.find({owner: user._id});
