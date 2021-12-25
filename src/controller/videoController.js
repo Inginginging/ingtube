@@ -1,6 +1,5 @@
 import Video from "../models/Video";
 import User from "../models/User";
-import res from "express/lib/response";
 
 export const home = async(req, res) =>{ 
     const videos= await Video.find({}).sort({createdAt: "desc" }).populate("owner"); //await을 사용하여 js에서 db와 통신하도록 기다려줌. 통신 후에 아래 코드 실행, desc을 통해 생성순서대로 내림차순 정렬.
@@ -20,6 +19,7 @@ export const postUpload = async(req,res) =>{
         fileUrl: video[0].path,
         thumbUrl: thumbnail[0].path,
         description,
+        createdAt: new Date().toLocaleString(),
         owner: _id, //owner에 id 저장.
         hashtags: Video.formatHashtags(hashtags),  //static 사용,
      });

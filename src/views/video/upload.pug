@@ -5,8 +5,8 @@ block content
         div#videoBox.hide
             video#preview
             button#actionBtn Recording Shorts
+        button#recordBtn.record_btn Recording Shorts Now!
         form(method="POST", enctype="multipart/form-data").upload-video_form
-            button#recordBtn.record_btn Recording Shorts Now!
             label(for="video") Video File 
             input(name="video", type="file", id="video", required, accept="video/*")
             label(for="thumbnail") Thumbnail File 

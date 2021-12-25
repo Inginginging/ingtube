@@ -1,6 +1,7 @@
 #videoContainer {
   width: 100%;
   position: relative;
+  margin-bottom: 15px;
   video {
     width: 100%;
   }
@@ -53,4 +54,43 @@
       }
     }
   }
+}
+
+.video_info {
+  display: flex;
+  flex-direction: column;
+  .video_title {
+    font: 26px bold;
+    margin-bottom: 5px;
+  }
+  .video_hashtags {
+    font-size: 14px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .video_description {
+    font-size: 14px;
+    opacity: 0.6;
+    margin-bottom: 3px;
+  }
+  .video_createdAt {
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .video_uploader {
+    margin-bottom: 10px;
+    font-size: 14px;
+    a {
+      font-size: 18px;
+      color: cornflowerblue;
+      text-decoration: underline;
+    }
+  }
+}
+
+.video_edit {
+  font-size: 14px;
+  color: cornflowerblue;
+  text-decoration: underline;
 }

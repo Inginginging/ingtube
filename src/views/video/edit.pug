@@ -1,9 +1,11 @@
 extends ../base
 
 block content 
-    h2 Edit Video: #{video.title}
-    form(method="POST")
-        input(placeholed="Edit Title", value=video.title, name="title", required)
-        input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=1, value=video.description)
-        input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required, value=video.hashtags.join())
-        input(type="submit", value="Save")
+    div.edit_video
+        h2.edit_video_title Edit Video: #{video.title}
+        form(method="POST")
+            input(placeholder="Edit Title", value=video.title, name="title", required)
+            input(name="description", type="text", placeholder="Descriptions of Video", required, minlength=1, value=video.description)
+            input(name="hashtags", type="text", placeholder="Hashtags. Separated by comma", required, value=video.hashtags.join())
+            input(type="submit", value="Save")
+        a.edit_video_delete(href=`/videos/${video.id}/delete`) Delete Video &rarr;
