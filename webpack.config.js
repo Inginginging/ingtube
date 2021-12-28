@@ -7,14 +7,9 @@ module.exports = {
   entry: {
     main: BASE_JS + "main.js",
     videoPlayer: BASE_JS + "videoPlayer.js",
+    commentSection: BASE_JS + "commentSection.js",
     recorder: BASE_JS + "recorder.js",
-    commentSection: BASE_JS + "commentSection.js"
   }, //변경하고자 하는 파일의 경로
-  mode: "development", //개발중인 상태임.
-  watch: true, 
-  watchOptions:{
-    poll:true,
-  },
   plugins: [
     new MiniCssExtractPlugin({ //css폴더를 따로 만들어서 css file 저장 가능하게 해줌.
       filename: "css/styles.css",
