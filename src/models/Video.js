@@ -5,11 +5,12 @@ const videoSchema = new mongoose.Schema({
     fileUrl: {type: String, required: true},
     thumbUrl: {type: String, required: true},
     description: {type: String, required: true, trim:true, minlength: 1},
-    createdAt: {type: Date, required: true, }, //default 값을 설정하면 data create 시 생략해도 오류 없음.  
+    createdAt: {type: Date, required: true, default: Date.now }, //default 값을 설정하면 data create 시 생략해도 오류 없음.  
     hashtags: [{type:String, trim:true, }],
     meta:{
         views: {type: Number, required: true, default: 0},
     },
+    comments: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}],
     owner: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "User"} //db에 저장된 User정보로 부터 objectId를 가져와 video의 owner 설정.
 });
 

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, },
     name: {type: String, required: true, },
     location: {type: String,},
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment"}],
     videos: [{type: mongoose.Schema.Types.ObjectId, ref: "Video"}] //db에 저장된 Video정보로 부터 objectId를 가져와 user의 video 설정..video를 업로드 가능하므로 array로 설정.
 })
 

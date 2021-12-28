@@ -94,3 +94,60 @@
   color: cornflowerblue;
   text-decoration: underline;
 }
+
+.video_add_comments {
+  width: 100%;
+  .video_comments_addForm {
+    margin-top: 15px;
+    width: 90%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    textarea {
+      width: 90%;
+      height: 30px;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    button {
+      margin-left: 10px;
+      font-size: 16px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      background-color: $red !important;
+      cursor: pointer;
+    }
+  }
+}
+
+.video_comments {
+  width: 500px;
+  display: flex;
+  .video_comments_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    .video_comment {
+      position: relative;
+      width: 100%;
+      padding: 10px;
+      border-radius: 9999px;
+      color: black;
+      background-color: white;
+      margin-bottom: 10px;
+      .deleteBtn {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+      }
+    }
+  }
+}

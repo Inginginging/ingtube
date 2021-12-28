@@ -107,11 +107,11 @@ const handleVideoClick = (event) =>{
     playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 }
 
-const handleKeydown = (event) =>{
+/*const handleKeydown = (event) =>{
     if(event.key == " "){
         handleVideoClick();
     }
-}
+}*/
 
 const handleEnd = () => {
     const { id } = videoContainer.dataset;  //videoContainer의 data-id에서 video의 id 가져옴
@@ -135,4 +135,4 @@ timeline.addEventListener("input", handleTimeLine);
 fullScreenBtn.addEventListener("click", handleFullScreen);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
-document.addEventListener("keydown", handleKeydown);
+//videoContainer.addEventListener("keydown", handleKeydown);

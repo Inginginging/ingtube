@@ -23,11 +23,25 @@ block content
         span.video_title=video.title
         small.video_hashtags=video.hashtags
         p.video_description=video.description
-        small.video_createdAt=video.createdAt 
+        small.video_createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: "long", year: "numeric", month: "long", day: "numeric"}) 
         small.video_uploader Uploaded by 
             a(href=`/users/${video.owner._id}`)=video.owner.username        
-    if String(video.owner._id) === String(loggedInUser._id)
-        a.video_edit(href=`${video.id}/edit`) Edit Video &rarr;
-
+        if String(video.owner._id) === String(loggedInUser._id)
+            a.video_edit(href=`${video.id}/edit`) Edit Video &rarr;
+    if loggedIn 
+        div.video_add_comments
+            form.video_comments_addForm#commentForm
+                textarea( rows="10", placeholder="Comment Here...")
+                button Add Comment
+    div.video_comments
+        ul.video_comments_list
+            each comment in video.comments.reverse()
+                li.video_comment(data-id=comment.id)
+                    i.fas.fa-comment
+                    span  #{comment.text}
+                    if String(comment.owner._id) === String(loggedInUser._id)
+                        span.deleteBtn ❌
 block scripts 
     script(src="/static/js/videoPlayer.js")
+    if loggedIn
+        script(src="/static/js/commentSection.js")

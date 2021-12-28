@@ -1,5 +1,7 @@
 import Video from "../models/Video";
 import User from "../models/User";
+import Comment from "../models/Comment";
+
 
 export const home = async(req, res) =>{ 
     const videos= await Video.find({}).sort({createdAt: "desc" }).populate("owner"); //await을 사용하여 js에서 db와 통신하도록 기다려줌. 통신 후에 아래 코드 실행, desc을 통해 생성순서대로 내림차순 정렬.
@@ -16,10 +18,9 @@ export const postUpload = async(req,res) =>{
     try{
         const newVideo = await Video.create({ //db에 자동으로 save 해줌.
         title, //===title:title
+        description,
         fileUrl: video[0].path,
         thumbUrl: thumbnail[0].path,
-        description,
-        createdAt: new Date().toLocaleString(),
         owner: _id, //owner에 id 저장.
         hashtags: Video.formatHashtags(hashtags),  //static 사용,
      });
@@ -35,7 +36,7 @@ export const postUpload = async(req,res) =>{
 
 export const watch = async(req, res) => {
     const {id} = req.params; // === const id = req.params.id;, get method로 query에 쓰인 id 저장
-    const video = await Video.findById(id).populate("owner");//mongoose의 populate메서드는 model의 owner안에 있는 ref로 부터 user'객체'정보를 찾아옴.
+    const video = await Video.findById(id).populate("owner").populate("comments");//mongoose의 populate메서드는 model의 owner안에 있는 ref로 부터 user'객체'정보를 찾아옴.
     //const owner = await User.findById(video.owner); //user model에서 video.owner의 id와 같은 id를 가진 user 객체 정보 찾아옴.
     if(!video){
         req.flash("error", "Video Not Found");
@@ -115,5 +116,49 @@ export const registerView = async(req, res) => { //어떠한 템플릿을 return
     }
     video.meta.views = video.meta.views + 1;
     await video.save();
+    return res.sendStatus(200);
+}
+
+export const registerComment = async (req, res) =>{
+    const {
+        params: {id}, //video id
+        body: {text}, //text
+        session: {user} //user obj
+    } = req;
+    const video = await Video.findById(id);
+    const commenter = await User.findById(user._id);
+    if(!video){
+        return res.sendStatus(404);
+    }
+    const comment = await Comment.create({
+        text: text,
+        owner:user._id,
+        video:id,
+    })
+    video.comments.push(comment._id); //Video model의 comments 프로퍼티(배열형태임)에 comment id 직접 push해줌.
+    video.save();
+    commenter.comments.push(comment._id);
+    commenter.save();
+    return res.status(201).json({newCommentId: comment._id}); //frontend로 새로 달리는 comment의 id 전송
+}
+
+export const deleteComment = async (req, res) => {
+    const {
+        params: {id}, //comment id
+        body: {videoId}, //video id
+        session: {user}, //login 된 user
+    } = req;
+    const video = await Video.findById(videoId);
+    const owner = await User.findById(user._id);
+    const comment = await Comment.findById(id).populate("video").populate("owner");
+    if (String(comment.owner._id) !== user._id){
+        return res.sendStatus(404);  
+    }
+    video.comments.splice(video.comments.indexOf(id), 1); //해당 comment video에서 삭제
+    owner.comments.splice(owner.comments.indexOf(id), 1); //해당 comment video에서 삭제
+    
+    await video.save();
+    await owner.save();
+    await comment.remove();
     return res.sendStatus(200);
 }

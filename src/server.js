@@ -24,11 +24,13 @@ app.use((req, res, next) => {  //ffmpeg error를 위한 조치.
     }); 
 app.use(logger);//morgan middleware를 global하게 사용
 app.use(express.urlencoded({ extended: true })); //form의 body를 express에 이해시키기 위한 메서드
-app.use(session({
-    secret: process.env.COOKIE_SECRET,
-    resave: false, //웹 사이트에 방문한 모든 사람에게 session을 제공하는 것이 아니라, session을 변경(로그인)한 사람에게만 session id 지급.
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl:process.env.DB_URL }), //나의 mongourl에 session 저장.
+app.use(express.json()); //backend에서 json을 자바스크립트 객체로 바꿔줌.
+app.use(
+    session({
+        secret: process.env.COOKIE_SECRET,
+        resave: false, //웹 사이트에 방문한 모든 사람에게 session을 제공하는 것이 아니라, session을 변경(로그인)한 사람에게만 session id 지급.
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl:process.env.DB_URL }), //나의 mongourl에 session 저장.
 }));
 
 app.use(flash());//flash middleware 사용.
