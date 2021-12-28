@@ -1,12 +1,12 @@
-const videoContainer = document.getElementById("videoContainer"); //video_dataset_id를 가져오기위함
+const videoContainer = document.getElementById("videoContainer"); 
 const form = document.getElementById("commentForm");
 const deleteBtn = document.querySelectorAll(".deleteBtn");
 
 const addComment = (text, id) =>{
     const videoComments = document.querySelector(".video_comments ul");
-    const newComment = document.createElement("li"); //js에서 만들 comment tag
-    newComment.className = "video_comment" //pug template에서 comment형식과 똑같이 만들어줌.
-    newComment.dataset.id = id; //새로운 comment에 바로 id 적용.
+    const newComment = document.createElement("li");
+    newComment.className = "video_comment" 
+    newComment.dataset.id = id; 
     const icon = document.createElement("i");
     icon.className = "fas fa-comment";
     const span = document.createElement('span');
@@ -22,25 +22,25 @@ const addComment = (text, id) =>{
 }
 
 const handleSubmit =  async (event) =>{
-    event.preventDefault(); //submit되어 default로 새로고침 되는것 막음.
+    event.preventDefault(); 
     const textarea = form.querySelector("textarea");
     const text = textarea.value;
-    const videoId = videoContainer.dataset.id;//해당 video의 정보 가져옴.
+    const videoId = videoContainer.dataset.id;
     if(text === ""){
-        return; //text내용이 없을땐, 동작x
+        return; 
     }
-    //backend로 text 정보 fetch
+
     const response = await fetch(`/api/videos/${videoId}/comment`,{   
-        method: "POST", //req의 방법
-        headers:{ //req의 세부 사항
-            "Content-Type": "application/json", //req로 가는 정보가 json형식이라는 것을 알려줌.
+        method: "POST", 
+        headers:{ 
+            "Content-Type": "application/json", 
         },
-        body: //req의 실질적 내용. 
-        JSON.stringify({text}), //text를 string화 해서 보내줌. 그러나 header에서 이 요청은 json정보라는 것을 알려주므로 backend에서 이해가능
+        body: 
+        JSON.stringify({text}), 
     })
-    if(response.status === 201 ){ //comment가 backend에 갔다가 돌아오면
-        textarea.value = ""; //comment 작성 후 textarea 비워주기.
-        const { newCommentId } = await response.json(); //backend에서의 newcommentid 가져옴.
+    if(response.status === 201 ){ 
+        textarea.value = ""; 
+        const { newCommentId } = await response.json(); 
         addComment(text, newCommentId);
     }
 }
@@ -62,11 +62,11 @@ const handleDelete = async (event) =>{
     }
 }
 
-if(form){ //login돼있다면 form이 보일거임. 그럴때만 event실행
+if(form){ 
     form.addEventListener("submit", handleSubmit);
 }
 
-if(deleteBtn){// deleteBtn이 보인다면
+if(deleteBtn){
     deleteBtn.forEach((deleteBtn) => {
         deleteBtn.addEventListener("click", handleDelete);
     })
