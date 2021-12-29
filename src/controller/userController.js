@@ -151,7 +151,7 @@ export const postEdit = async (req,res) =>{
         }
     }
     const updatedUser = await User.findByIdAndUpdate( _id, {
-        avatarUrl: file ? file.path : avatarUrl, //file이 변경 되엇으면 file경로의 file로 avatarUrl 바꿈. 아니면 기존의 avatarUrl유지.
+        avatarUrl: file ? file.location : avatarUrl, //file이 변경 되엇으면 file경로의 file로 avatarUrl 바꿈. 아니면 기존의 avatarUrl유지.
         name,
         username,
         email,
