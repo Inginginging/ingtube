@@ -21,9 +21,9 @@ header
                         else 
                             if loggedInUser.avatarUrl
                                 if loggedInUser.avatarUrl.includes("github")
-                                    img.header_avatar(src=loggedInUser.avatarUrl)
+                                    img.header_avatar(src=loggedInUser.avatarUrl, crossorigin)
                                 else 
-                                    img.header_avatar(src=loggedInUser.avatarUrl)
+                                    img.header_avatar(src=loggedInUser.avatarUrl,)
             else
                 li
                     a(href=`/join`).header_btn Join
