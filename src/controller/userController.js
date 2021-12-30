@@ -150,8 +150,9 @@ export const postEdit = async (req,res) =>{
             return res.status(400).render("user/edit-profile", {pageTitle: "Edit Profile"});
         }
     }
+    const isHeroku = process.env.NODE_ENV === "production";
     const updatedUser = await User.findByIdAndUpdate( _id, {
-        avatarUrl: file ? file.location : avatarUrl, //file이 변경 되엇으면 file경로의 file로 avatarUrl 바꿈. 아니면 기존의 avatarUrl유지.
+        avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl, //file이 변경 되엇으면 file경로의 file로 avatarUrl 바꿈. 아니면 기존의 avatarUrl유지.
         name,
         username,
         email,
