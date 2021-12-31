@@ -14,11 +14,12 @@ import { localsMiddleware } from "./middleware"; //server에 import함으로서 
 
 const app = express(); //express를 사용해 app객체를 만듬. (express의 기능을 가진 app) 
 const logger = morgan("dev");
+const path = require("path");
 
 app.set("view engine", "pug"); //express에 view engine으로 pug를 사용할 것을 알려줌
 app.set("views", process.cwd() + "/src/views"); //express의 view 디폴트 값을 /src/views로 옮겨줌.
 
-app.use(favicon(__dirname + "favicon.ico")); //favicon 
+app.use(favicon(path.join(__dirname,"client","img","favicon.ico"))); //favicon 
 app.use((req, res, next) => {  //ffmpeg error를 위한 조치.
     res.header("Cross-Origin-Embedder-Policy", "require-corp");
     res.header("Cross-Origin-Opener-Policy", "same-origin");
