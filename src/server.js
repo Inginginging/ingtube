@@ -3,6 +3,7 @@ import morgan from "morgan"; // morgan: external middleware
 import session from "express-session" // session과 cookie저장을 가능하게 해주는 middleware
 import flash from "express-flash"; //flash message를 띄우는 middleware
 import MongoStore from "connect-mongo"; //session data를 mongodb에 저장하기 위해  mongostroe import
+import favicon from "serve-favicon"
 
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
@@ -17,7 +18,7 @@ const logger = morgan("dev");
 app.set("view engine", "pug"); //express에 view engine으로 pug를 사용할 것을 알려줌
 app.set("views", process.cwd() + "/src/views"); //express의 view 디폴트 값을 /src/views로 옮겨줌.
 
-
+app.use(favicon(__dirname + `/favicon.ico`));
 app.use((req, res, next) => {  //ffmpeg error를 위한 조치.
     res.header("Cross-Origin-Embedder-Policy", "require-corp");
     res.header("Cross-Origin-Opener-Policy", "same-origin");

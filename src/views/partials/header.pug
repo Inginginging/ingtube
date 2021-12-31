@@ -1,23 +1,22 @@
 header 
     a(href="/").header_logo
         i.fab.fa-youtube
+        span.ing  ING
+        span tube
     nav 
         ul
             li
                 a(href=`/search`)
                     i.fas.fa-search
-            if loggedIn
-                
-                li
-                    a(href=`/users/edit`) Edit Profile
+            if loggedIn      
                 li
                     a(href=`/videos/upload`) Upload Video
                 li
-                    a(href=`/users/logout`) Logout
+                    a(href=`/users/logout`) Sign out
                 li
                     a(href=`/users/${loggedInUser._id}`)
-                        if loggedInUser.avatarUrl === "" || false
-                            span 😀
+                        if (loggedInUser.avatarUrl === "" || false) || loggedInUser.socialOnly === false
+                            i.fas.fa-user-circle
                         else 
                             if loggedInUser.avatarUrl
                                 if loggedInUser.avatarUrl.includes("github")
@@ -26,6 +25,6 @@ header
                                     img.header_avatar(src=loggedInUser.avatarUrl, crossorigin)
             else
                 li
-                    a(href=`/join`).header_btn Join
+                    a(href=`/join`).header_btn Sign up
                 li
-                    a(href=`/login`) Login
+                    a(href=`/login`) Sign in

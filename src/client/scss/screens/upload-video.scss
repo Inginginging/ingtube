@@ -4,9 +4,9 @@
 
 .record_btn {
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  background-color: $red !important;
+  border: 1px solid rgba($color: $notBg, $alpha: 0.3);
+  color: $f-color;
+  background-color: $logo !important;
   margin-bottom: 10px;
   text-align: center;
   position: relative;

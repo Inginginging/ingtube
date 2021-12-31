@@ -5,19 +5,19 @@ form {
     padding: 25px;
     background-color: rgba($color: $bg, $alpha: 0.7);
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba($color: $logo, $alpha: 0.3);
   }
 }
 
 input:not([type="range"]) {
   all: unset;
-  background-color: black;
+  background-color: $notBg;
   padding: 15px 20px;
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 5px;
   font-size: 16px;
-  color: white;
+  color: $f-color;
   width: 90%;
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
@@ -27,7 +27,7 @@ input:not([type="range"]) {
 input[type="submit"],
 .social_btn {
   margin-top: 8px;
-  background-color: $red !important;
+  background-color: $logo !important;
   opacity: 0.9;
   padding: 12px 20px;
   text-align: center !important;
@@ -35,7 +35,7 @@ input[type="submit"],
   display: block;
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  color: $f-color;
   &:focus {
     outline: none;
   }
