@@ -9,7 +9,8 @@ block content
             img(src="/"+user.avatarUrl, crossorigin).avatar 
         h3=user.username
         br
-        a(href=`/users/edit`) Edit Profile
+        if String(user._id) === String(loggedInUser._id)
+            a(href=`/users/edit`) Edit Profile
     div.video-grid
         each video in user.videos 
             +video(video)
