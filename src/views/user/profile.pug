@@ -3,9 +3,11 @@ include ../mixins/video
 
 block content
     div.profile_data
-        if (loggedInUser.avatarUrl === "" || false) || loggedInUser.socialOnly === false
+        if (loggedInUser.avatarUrl)
+            img(src=`${user.avatarUrl}`, crossorigin).avatar 
+        else if (loggedInUser.avatarUrl === "" || false) || loggedInUser.socialOnly === false
             i.fas.fa-user-circle
-        else
+        //-else
             img(src=`${user.avatarUrl}`, crossorigin).avatar 
         h3=user.username
         br
