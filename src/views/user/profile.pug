@@ -6,7 +6,7 @@ block content
         if (loggedInUser.avatarUrl === "" || false) || loggedInUser.socialOnly === false
             i.fas.fa-user-circle
         else
-            img(src="/"+user.avatarUrl, crossorigin).avatar 
+            img(src=`user.avatarUrl`, crossorigin).avatar 
         h3=user.username
         br
         if String(user._id) === String(loggedInUser._id)
